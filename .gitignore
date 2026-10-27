@@ -4,4 +4,4 @@
 .Ruserdata
 
 # Quarto outputs
-GenomeQC_files/*
+GenomeQC/GenomeQC_files/*
