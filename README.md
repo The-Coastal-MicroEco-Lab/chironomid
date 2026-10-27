@@ -3,17 +3,17 @@ This is under construction at the moment
 
 ## Create conda environment
 
-TBD
 ``` bash
 git clone https://github.com/The-Coastal-MicroEco-Lab/chironomid.git
 cd chironomid
-#./install_dependencies.sh
-#conda activate chironomid
+conda env create -f chironomid_paper.yml
+conda activate chironomid_paper_v0.01
 ```
 
 If you require packages not installed in the above environment, add them to chironomid_paper.yml and update the version number.
 
 ## Create symlinks in `data` to the location of these files in your system
+*note: this is a placeholder, at the moment no external data files need to be added*
 
 1. `<link to genomes>`
 

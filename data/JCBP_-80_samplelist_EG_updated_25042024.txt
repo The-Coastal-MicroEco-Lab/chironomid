@@ -1,0 +1,55 @@
+sample.name	SIP	metagenomes	metatranscriptomes	DNA.qubit.concentration	DNA.nanodrop.concentration	DNA.260.280	DNA.260.230	RNA.qubit.concentration	RNA.nanodrop.concentration	RNA.260.280	RNA.260.230	date.collected	site	environment	enrichment	material	washed	location	DNA.sample.box	
+260722_JC_BP_TA_BN_43a	N	Y	N	1.54	30.8	1.8	1.41	NA	NA	NA	NA	26-Jul-22	beaverpond	transect	N	burrow	N	in -80 freezer	Jess BP 2023 DNA/RNA	
+260722_JC_BP_TB_BN_44a	N	Y	N	15.6	28.2	1.83	1.86	NA	NA	NA	NA	26-Jul-22	beaverpond	transect	N	burrow	N	in -80 freezer	Jess BP 2023 DNA/RNA	
+260722_JC_BP_TB_BW_35a	N	Y	N	10.7	19.3	1.8	2.03	NA	NA	NA	NA	26-Jul-22	beaverpond	transect	N	burrow	Y	in -80 freezer	Jess BP 2023 DNA/RNA	
+260722_JC_BP_TC_BN_46a	N	Y	N	15.6	30.1	1.85	1.96	NA	NA	NA	NA	26-Jul-22	beaverpond	transect	N	burrow	N	in -80 freezer	Jess BP 2023 DNA/RNA	
+260722_JC_BP_TC_BW_37a	N	Y	N	23.6	44.6	1.91	2.03	NA	NA	NA	NA	26-Jul-22	beaverpond	transect	N	burrow	Y	in -80 freezer	Jess BP 2023 DNA/RNA	
+260722_JC_BP_TC_S_30	N	Y	N	19.5	35.4	1.84	1.35	NA	NA	NA	NA	26-Jul-22	beaverpond	transect	N	sediment	N	in -80 freezer	Jess BP 2023 DNA/RNA	
+260722_JC_BP_TD_S_32	N	Y	N	13.2	30.1	1.84	1.35	NA	NA	NA	NA	26-Jul-22	beaverpond	transect	N	sediment	N	in -80 freezer	Jess BP 2023 DNA/RNA	
+100822_JC_MBP_12_c1_BW_1a	Y	N	Y	8.44	19.8	1.82	0.67	0	6.3	1.52	0.2	10-Aug-22	beaverpond	mesocosm	N	burrow	Y	in -80 freezer	Jess BP 2023 DNA/RNA	
+100822_JC_MBP_12_c1_BW_3a	Y	N	Y	18.3	34.4	1.85	1	6.05	8	1.46	0.26	10-Aug-22	beaverpond	mesocosm	N	burrow	Y	in -80 freezer	Jess BP 2023 DNA/RNA	
+100822_JC_MBP_12_c1_S_1	Y	N	Y	23.9	40.6	1.93	1.11	7.99	11.2	1.53	0.32	10-Aug-22	beaverpond	mesocosm	N	sediment	N	in -80 freezer	Jess BP 2023 DNA/RNA	
+100822_JC_MBP_12_c1_S_3	Y	N	Y	31	47	1.93	1.26	9.12	10	1.43	0.32	10-Aug-22	beaverpond	mesocosm	N	sediment	N	in -80 freezer	Jess BP 2023 DNA/RNA	
+100822_JC_MBP_12_c2_BW_1a	Y	N	Y	38.3	63.4	1.92	1.51	8.4	12.1	1.64	0.41	10-Aug-22	beaverpond	mesocosm	N	burrow	Y	in -80 freezer	Jess BP 2023 DNA/RNA	
+100822_JC_MBP_12_c2_BW_4a	Y	N	Y	11.7	23.9	1.86	0.6	4.96	7.3	1.41	0.22	10-Aug-22	beaverpond	mesocosm	N	burrow	Y	in -80 freezer	Jess BP 2023 DNA/RNA	
+100822_JC_MBP_12_c2_S_1	Y	N	Y	9.38	21.3	2	0.68	0	6.4	1.45	0.05	10-Aug-22	beaverpond	mesocosm	N	sediment	N	in -80 freezer	Jess BP 2023 DNA/RNA	
+100822_JC_MBP_12_c2_S_2	Y	N	Y	38.7	64.7	1.88	1.34	4.38	7.2	1.42	0.2	10-Aug-22	beaverpond	mesocosm	N	sediment	N	in -80 freezer	Jess BP 2023 DNA/RNA	
+100822_JC_MBP_13_c5_S_1	Y	N	Y	18.1	39.7	1.86	1.05	4.2	9.3	1.66	0.24	10-Aug-22	beaverpond	mesocosm	Y	sediment	N	in -80 freezer	Jess BP 2023 DNA/RNA	
+100822_JC_MBP_13_c5_S_2	Y	N	Y	20.6	34.4	1.92	1.19	2	4.2	1.17	0.15	10-Aug-22	beaverpond	mesocosm	Y	sediment	N	in -80 freezer	Jess BP 2023 DNA/RNA	
+100822_JC_MBP_13_c6_BW_1a	Y	N	Y	13.2	27.4	1.87	0.73	4.2	4.6	1.49	0.15	10-Aug-22	beaverpond	mesocosm	Y	burrow	Y	in -80 freezer	Jess BP 2023 DNA/RNA	
+100822_JC_MBP_13_c6_BW_2a	Y	N	Y	11	19.6	2.36	0.6	0	3.7	1.13	0.04	10-Aug-22	beaverpond	mesocosm	Y	burrow	Y	in -80 freezer	Jess BP 2023 DNA/RNA	
+100822_JC_MBP_13_c6_BW_3a	Y	N	Y	26.6	43.7	1.92	1.06	6.18	16	1.72	0.19	10-Aug-22	beaverpond	mesocosm	Y	burrow	Y	in -80 freezer	Jess BP 2023 DNA/RNA	
+100822_JC_MBP_13_c6_S_2	Y	N	Y	59	91.9	1.9	1.57	9.41	16	1.75	0.31	10-Aug-22	beaverpond	mesocosm	Y	sediment	N	in -80 freezer	Jess BP 2023 DNA/RNA	
+100822_JC_MBP_13_c6_BW_4a	Y	N	Y	27.7	40.3	1.92	1.49	9.85	12.3	1.53	0.35	10-Aug-22	beaverpond	mesocosm	Y	burrow	Y	in -80 freezer	Jess BP 2023 DNA/RNA	
+100822_JC_MBP_13_c6_S_4	Y	N	Y	35.1	60.9	1.89	1.38	6.68	10.6	1.68	0.28	10-Aug-22	beaverpond	mesocosm	Y	sediment	N	in -80 freezer	Jess BP 2023 DNA/RNA	
+260722_JC_BP_TD_BN_48a	N	Y	Y	NA	NA	NA	NA	29.8	33.1	1.74	0.7	26-Jul-22	beaverpond	transect	N	burrow	N	in -20 freezer		tube empty/almost empty
+260722_JC_BP_TD_BW_39a	N	Y	Y	NA	NA	NA	NA	22.8	27.9	1.79	0.36	26-Jul-22	beaverpond	transect	N	burrow	Y	in -20 freezer		tube empty/almost empty
+260722_JC_BP_TE_BN_50a	N	Y	Y	NA	NA	NA	NA	7.52	10	1.36	0.15	26-Jul-22	beaverpond	transect	N	burrow	N	in -20 freezer		tube empty/almost empty
+260722_JC_BP_TE_BW_41a	N	Y	Y	NA	NA	NA	NA	10	15.1	1.56	0.06	26-Jul-22	beaverpond	transect	N	burrow	Y	in -20 freezer		tube empty/almost empty
+260722_JC_BP_TE_S_34	N	Y	Y	NA	NA	NA	NA	3.61	8.2	1.24	0.13	26-Jul-22	beaverpond	transect	N	sediment	N	in -20 freezer		tube empty/almost empty
+260722_JC_BP_S_TE_40_RNA	N	N	Y	NA	NA	NA	NA	3.1	5.7	1.26	0.13	26-Jul-22	beaverpond	transect	N	sediment	N	in -80 freezer	Jess BP 2023 DNA/RNA	
+260722_JC_BP_BN_TD_49a_RNA	N	N	Y	NA	NA	NA	NA	4.79	6.9	1.34	0.12	26-Jul-22	beaverpond	transect	N	burrow	N	in -80 freezer	Jess BP 2023 DNA/RNA	
+260722_JC_BP_BW_TE_40a_RNA	N	N	Y	NA	NA	NA	NA	12.9	18.4	1.73	0.41	26-Jul-22	beaverpond	transect	N	burrow	Y	in -80 freezer	Jess BP 2023 DNA/RNA	
+260722_JC_BP_BW_TD_38a_DNA				32	53.6	1.88	1.86	NA	NA	NA	NA	26-Jul-22	beaverpond	transect	N	burrow	Y	in -80 freezer	Jess BP 2023 DNA/RNA	
+																				
+																				
+Other Samples																				
+260722_JC_BP_TA_BW_32				0.846	3.1	2.06	-8.71	NA	NA	NA	NA	26-Jul-22	beaverpond	transect	N	burrow	Y	in -80 freezer	JC MT+MG	
+269722_JC_BP_TB_BW_33				4.23	8.8	1.9	3.57	11	28.5	1.5	0.35	26-Jul-22	beaverpond	transect	N	burrow	Y	in -80 freezer	JC MT+MG	
+260722_JC_BP_TE_BW_34				6.66	13	1.79	1.59	30.3	42.9	1.88	0.7	26-Jul-22	beaverpond	transect	N	burrow	Y	in -80 freezer	JC MT+MG	
+260722_JC_BP_TD_BW_35				7.41	14.6	1.71	0.86	35.8	66.6	1.82	0.91	26-Jul-22	beaverpond	transect	N	burrow	Y	in -80 freezer	JC MT+MG	
+260722_JC_BP_TE_BW_36				6.06	12.2	1.76	0.63	98	225.5	1.95	1.48	26-Jul-22	beaverpond	transect	N	burrow	Y	in -80 freezer	JC MT+MG	
+260722_JC_BP_TA_BN_37				4.23	10.3	1.71	0.69	9.22	17.5	1.55	0.24	26-Jul-22	beaverpond	transect	N	burrow	N	in -80 freezer	JC MT+MG	
+260722_JC_BP_TB_BN_38				8.21	17.3	1.73	0.53	23.2	41.4	1.7	0.47	26-Jul-22	beaverpond	transect	N	burrow	N	in -80 freezer	JC MT+MG	
+260722_JC_BP_TC_BN_39				6.25	15.6	1.72	0.89	75	196.8	1.95	1.49	26-Jul-22	beaverpond	transect	N	burrow	N	in -80 freezer	JC MT+MG	
+260722_JC_BP_TD_BN_40				10.8	18.4	1.85	1.64	20.8	47.4	1.64	0.79	26-Jul-22	beaverpond	transect	N	burrow	N	in -80 freezer	JC MT+MG	
+260722_JC_BP_TE_BN_41				5.77	12.8	1.68	2.11	14.7	23	1.59	0.59	26-Jul-22	beaverpond	transect	N	burrow	N	in -80 freezer	JC MT+MG	
+260722_JC_BP_TA_S_26				2.86	8.2	1.63	1.43	4.31	31.5	1.45	0.44	26-Jul-22	beaverpond	transect	N	sediment	N	in -80 freezer	JC MT+MG	
+260722_JC_BP_TB_S_27				4.3	10.8	1.7	2.64	12.4	23.9	1.64	0.47	26-Jul-22	beaverpond	transect	N	sediment	N	in -80 freezer	JC MT+MG	
+260722_JC_BP_TC_S_28				3.28	7.1	1.55	3.89	26.2	38.5	1.73	0.82	26-Jul-22	beaverpond	transect	N	sediment	N	in -80 freezer	JC MT+MG	
+260722_JC_BP_TD_S_29				4.41	10.6	1.59	2.26	24	34.1	1.73	0.75	26-Jul-22	beaverpond	transect	N	sediment	N	in -80 freezer	JC MT+MG	
+260722_JC_BP_TE_S_30				5.01	11.8	1.66	2.6	30.9	50.8	1.76	0.75	26-Jul-22	beaverpond	transect	N	sediment	N	in -80 freezer	JC MT+MG	
+																				
+																				
+																				
+can pool samples if necessary																				
