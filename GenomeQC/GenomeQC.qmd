@@ -1,0 +1,339 @@
+---
+title: "GenomeQC"
+author: "Hannah Holland-Moritz"
+format: 
+  html:
+    fig-width: 8
+    fig-height: 16
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+## QC of genomes from chironomid project
+
+This code will read in the gtdb output and checkm2 output for the chironomid genomes. 1) it will produce a genome taxonomy input file to hand off to dram. 2) it will analyze the genome quality
+
+## Load data and clean
+
+```{r load-libraries}
+#| include: false
+library(tidyverse)
+library(readxl)
+library(kableExtra) # pretty tables
+library(here)
+
+theme_set(theme_bw())
+
+```
+
+```{r table-plotting-function}
+#| include: false
+
+make_table <- function(data,
+                       height = "400px",
+                       width = "100%",
+                       caption = NULL,
+                       striped = TRUE,
+                       font_size = 13,
+                       sortable = TRUE) {
+
+  table <- data |>
+    knitr::kable(
+      format = "html",
+      caption = caption,
+      row.names = FALSE,
+      escape = TRUE
+    ) |>
+    kableExtra::kable_styling(
+      bootstrap_options = c(
+        if (striped) "striped",
+        "hover",
+        "condensed"
+      ),
+      full_width = TRUE,
+      font_size = font_size
+    ) |>
+    kableExtra::scroll_box(
+      width = width,
+      height = height,
+      fixed_thead = TRUE
+    )
+
+  if (!sortable) return(table)
+
+  sort_js <- "
+  (() => {
+    const container = document.currentScript.previousElementSibling;
+    const table = container.querySelector('table');
+    if (!table || !table.tBodies.length) return;
+
+    const headers = table.querySelectorAll('thead tr:last-child th');
+    const tbody = table.tBodies[0];
+
+    headers.forEach((th, col) => {
+      th.style.cursor = 'pointer';
+      th.tabIndex = 0;
+      th.setAttribute('role', 'button');
+      th.setAttribute('aria-label', th.textContent + ', sort column');
+      th.setAttribute('aria-sort', 'none');
+
+      const sort = () => {
+        const asc = th.dataset.order !== 'asc';
+        const rows = Array.from(tbody.rows);
+
+        const numeric = rows.every(row => {
+          const x = row.cells[col]?.textContent.trim() || '';
+          return x === '' || !isNaN(Number(x.replace(/,/g, '')));
+        });
+
+        rows.sort((a, b) => {
+          const x = a.cells[col]?.textContent.trim() || '';
+          const y = b.cells[col]?.textContent.trim() || '';
+
+          if (x === '') return y === '' ? 0 : 1;
+          if (y === '') return -1;
+
+          const result = numeric
+            ? Number(x.replace(/,/g, '')) - Number(y.replace(/,/g, ''))
+            : x.localeCompare(y, undefined, {
+                numeric: true,
+                sensitivity: 'base'
+              });
+
+          return asc ? result : -result;
+        });
+
+        rows.forEach(row => tbody.appendChild(row));
+
+        headers.forEach(h => {
+          h.dataset.order = '';
+          h.setAttribute('aria-sort', 'none');
+          h.querySelector('.sort-indicator')?.remove();
+        });
+
+        th.dataset.order = asc ? 'asc' : 'desc';
+        th.setAttribute('aria-sort', asc ? 'ascending' : 'descending');
+
+        const indicator = document.createElement('span');
+        indicator.className = 'sort-indicator';
+        indicator.textContent = asc ? ' ▲' : ' ▼';
+        th.appendChild(indicator);
+      };
+
+      th.addEventListener('click', sort);
+      th.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          sort();
+        }
+      });
+    });
+  })();
+  "
+
+  htmltools::tagList(
+    htmltools::div(htmltools::HTML(as.character(table))),
+    htmltools::tags$script(htmltools::HTML(sort_js))
+  )
+}
+
+
+```
+
+Read in data, combine bacterial and archaeal gtdb assignments.
+
+```{r, read-data}
+# Sample metadata (JGI and internal)
+jgi_metadata_raw_headers <- names(readxl::read_xlsx(here("data/508066 MG MT metadata 052024 ER.xlsx"), n_max = 0))
+jgi_metadata_raw <- readxl::read_xlsx(here("data/508066 MG MT metadata 052024 ER.xlsx"), skip = 3, 
+                                  col_names = jgi_metadata_raw_headers)
+# contains internal experimental information;
+# had to export to tsv because readxlsx doesn't like the "other samples" part
+internal_metadata_raw <- read_tsv(here("data/JCBP_-80_samplelist_EG_updated_25042024.txt"))
+
+# Join the two metadatas together
+metadata_raw <- jgi_metadata_raw %>%
+  left_join(internal_metadata_raw, by = c("Sample Name*" = "sample.name")) %>%
+  mutate(sample_name_no_space = gsub(" ", "_", `Seq Project Name (No edit)`)) %>%
+  select(`Sample Name*`, site, environment, enrichment, material, everything())
+
+
+# Quality report
+chkm_qual <- read_tsv(here("data/quality_report.tsv"))
+
+# Taxonomy assignments
+# From running "aviary annotate" with default settings; 
+# aviary version: 0.13.4
+# Gtdb version: release 232
+gtdb_assignment_arch <- read_tsv(here("data/gtdbtk.ar53.summary.tsv"), na = c("","NA","N/A")) %>%
+  mutate(msa_percent = as.double(msa_percent))
+gtdb_assignment_bac <- read_tsv(here("data/gtdbtk.bac120.summary.tsv"), na = c("","NA","N/A")) %>%
+  mutate(msa_percent = as.double(msa_percent))
+
+gtdb_assignment_bacarc <- bind_rows(gtdb_assignment_arch, gtdb_assignment_bac)
+
+```
+
+#### Create and write out taxonomy file for DRAM
+
+Dram taxonomy file just needs genome id and classification column.
+
+```{r}
+gtdb_dram_taxonomy <- gtdb_assignment_bacarc %>% 
+  select(user_genome, classification)
+
+write_tsv(gtdb_dram_taxonomy, file = here("data/gtdb_dram_taxonomy.tsv"))
+
+```
+
+Read in rrna information for MIMAG quality
+
+```{r}
+rrnas_raw <- read_tsv(here("data/ANNOTATE/collected_rrnas.tsv"))
+
+rrnas <- rrnas_raw %>%
+  pivot_longer(!matches(c("gene_id", "gene_description", "category", "topic_ecosystem", "subcategory")),
+               names_to = "GenomeID", values_to = "Count") %>%
+  select(gene_id, GenomeID, Count) %>%
+  pivot_wider(names_from = "gene_id", values_from = "Count") %>%
+  mutate(AllPresent = case_when(`5S rRNA` > 0 & `16S rRNA` > 0 & `23S rRNA` > 0 ~ TRUE,
+                                .default = FALSE))
+
+trnas_raw <- read_tsv(here("data/ANNOTATE/collected_trnas.tsv"))
+trnas <- trnas_raw %>%
+  pivot_longer(!matches(c("gene_id", "AA_type", "gene_description", "category", "topic_ecosystem", "subcategory")),
+               names_to = "GenomeID", values_to = "Count") %>%
+  select(gene_id, GenomeID, Count) %>%
+  pivot_wider(names_from = "gene_id", values_from = "Count") %>%
+  mutate(totaltrna = rowSums(across(-1), na.rm = TRUE))
+
+```
+
+Combine all tables into one
+
+```{r}
+chkm_qual_taxonomy <- chkm_qual %>%
+  # Get an exact match to sample_name_no_space and join on that
+  # since our sample columns are a bit messy
+  mutate(
+    sample_id = map_chr(Name, \(x) {
+      matches <- metadata_raw$sample_name_no_space[
+        str_detect(x, fixed(metadata_raw$sample_name_no_space))
+      ]
+      if (length(matches) == 0) NA_character_
+      else matches[which.max(nchar(matches))]
+    })
+  ) %>%
+  left_join(metadata_raw,by = c("sample_id" = "sample_name_no_space")) %>%
+  #mutate(sample_id = str_remove(Name, "(_[^_]+){4}$")) %>% # remove last 4 underscores
+  #left_join(metadata_raw, by = c("sample_id" = "sample_name_no_space")) %>%
+  left_join(gtdb_assignment_bacarc, by = c("Name"="user_genome")) %>%
+  separate(classification, into = c("Domain", "Phylum", "Class", "Order", "Family", "Genus", "Species"),
+           sep = ";", remove = F) %>%
+  left_join(trnas, by = c("Name"="GenomeID")) %>%
+  left_join(rrnas, by = c("Name"="GenomeID")) %>%
+  mutate(MIMAG_Quality_Classification = case_when(Completeness > 90 & Contamination < 5 & totaltrna >= 18 & AllPresent == TRUE ~ "High",
+                                                     Completeness > 90 & Contamination < 5 & (totaltrna < 18 | AllPresent != TRUE) ~ "High, lacking RNAs",
+                                                  Completeness > 90 & Contamination > 5 ~ "High, contaminated",
+                                                  Completeness >= 50 & Contamination < 10 ~ "Medium",
+                                                  Completeness >= 50 & Contamination > 10 ~ "Medium, contaminated",
+                                                  Completeness < 50 & Contamination < 10 ~ "Low",
+                                                  Completeness < 50 & Contamination > 10 ~ "Low, contaminated")) %>%
+  mutate(MIMAG_Quality_Classification = factor(MIMAG_Quality_Classification, 
+                                               levels = c("High", "High, lacking RNAs","Medium", "Low", "High, contaminated", "Medium, contaminated",
+                                                          "Low, contaminated"))) %>%
+  mutate(sample_id = str_remove(Name, "_[0-9]+_[0-9]+$")) %>%
+  select(Name, sample_id, classification, MIMAG_Quality_Classification, Completeness, Contamination, everything())
+```
+
+## Tables overview
+
+### CheckM2 Output
+
+```{r}
+make_table(chkm_qual)
+```
+
+### GTDB output
+
+```{r}
+make_table(gtdb_assignment_bacarc)
+```
+
+Note - only two archaea are found, both from same sample: 100822_JC_MBP_13_c6_S_2_enrichment_100ent_FD
+
+## Assessing genome quality
+
+Summarize by sample
+
+```{r}
+chkm_qual_taxonomy %>% 
+  select(Name, classification, Completeness, Contamination, totaltrna, AllPresent, MIMAG_Quality_Classification) %>% 
+  make_table()
+```
+
+```{r}
+quality_by_sample <- chkm_qual_taxonomy %>%
+  group_by(`Seq Project Name (No edit)`, MIMAG_Quality_Classification) %>%
+  tally() %>%
+  mutate(N_highqual = ifelse(MIMAG_Quality_Classification == "High", n, NA)) %>% 
+  ungroup() %>%
+  group_by(`Seq Project Name (No edit)`) %>%
+  fill(N_highqual, .direction = "down") %>%
+  ungroup() %>%
+  mutate(N_highqual = ifelse(is.na(N_highqual), 0, N_highqual)) %>%
+  rename(sample_id = `Seq Project Name (No edit)`)
+
+ggplot(quality_by_sample, aes(x = fct_reorder2(sample_id, n, N_highqual), y = n)) +
+  geom_bar(stat = "identity", aes(fill = MIMAG_Quality_Classification),
+           position = position_dodge2(preserve = "single") ) +
+  ylab("Number of Genomes") + xlab("Sample Name") +
+  scale_y_continuous(expand = c(0,0), breaks = function(x) unique(floor(pretty(x)))) +
+  facet_wrap(~MIMAG_Quality_Classification, scale = "free_y", ncol = 1) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom")
+  
+```
+
+```{r}
+genomes_by_location <- chkm_qual_taxonomy %>%
+  select(`Seq Project Name (No edit)`, "Sample Name*", site, material, enrichment, material, environment) %>%
+  right_join(quality_by_sample, by = c("Seq Project Name (No edit)" = "sample_id"))
+
+
+ggplot(chkm_qual_taxonomy, 
+       aes(x = `Sample Name*`)) +
+  geom_bar(stat = "count", aes(fill = MIMAG_Quality_Classification),
+           position = position_dodge2(preserve = "single") ) +
+  ylab("Number of Genomes") + xlab("Sample Name") +
+  scale_y_continuous(expand = c(0,0), breaks = function(x) unique(floor(pretty(x)))) +
+  facet_wrap(~MIMAG_Quality_Classification, scale = "free_y", ncol = 1) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom")
+
+ggplot(chkm_qual_taxonomy, 
+       aes(x = `material`)) +
+  geom_bar(stat = "count", aes(fill = MIMAG_Quality_Classification),
+           position = position_dodge2(preserve = "single") ) +
+  ylab("Number of Genomes") + xlab("Sample Name") +
+  scale_y_continuous(expand = c(0,0), breaks = function(x) unique(floor(pretty(x)))) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom")
+
+  
+
+```
+
+## Understand the taxonomy of the high and medium quality genomes
+
+```{r}
+ggplot(chkm_qual_taxonomy %>% filter(MIMAG_Quality_Classification %in% c("High", "High, lacking RNAs", "Medium")), 
+       aes(x = `Sample Name*`)) +
+  geom_bar(stat = "count", aes(fill = Phylum)) +
+  ylab("Number of Genomes") + xlab("Sample Name") +
+  scale_y_continuous(expand = c(0,0), breaks = function(x) unique(floor(pretty(x)))) +
+  facet_wrap(~MIMAG_Quality_Classification, ncol = 1) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom")
+```
