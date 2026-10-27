@@ -1,0 +1,12 @@
+name: chironomid_paper_v0.01
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python>=3.6
+  - r-base>=4.1.0
+  - r-essentials
+  - r-here
+  - r-kableextra
+  - r-readxl
